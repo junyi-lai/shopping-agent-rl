@@ -1,0 +1,26 @@
+{
+  "artifacts": {
+    "evaluation": "works/eval/base",
+    "model": "models/base"
+  },
+  "eval": {
+    "benchmark": "data/evaluation/tasks.jsonl",
+    "benchmark_sha256": "d99112a20ef47534c27a32e4b38229bf048dcc6b06fef2e3e919aac3093662f5",
+    "context_safety_margin": 512,
+    "context_window": 24576,
+    "denominator": "全部 200 题，不剔除失败轨迹",
+    "max_steps": 35,
+    "max_tokens": 512,
+    "observation_token_budget": 1536,
+    "reward_contract": "shopping-reward-v4",
+    "rollouts": 200,
+    "rollouts_per_task": 1.0,
+    "tasks": 200,
+    "temperature": 0.0,
+    "top_p": 1.0
+  },
+  "kind": "base_model",
+  "label": "base",
+  "model": "openbmb/MiniCPM5-2B",
+  "note": "未经本项目训练；只做同一套 Final-200 的基线测评"
+}

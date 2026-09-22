@@ -1,0 +1,17 @@
+{
+  "version": "brand-aliases-v1",
+  "aliases": {
+    "apple": [
+      "Apple",
+      "苹果"
+    ],
+    "philips": [
+      "Philips",
+      "飞利浦"
+    ],
+    "hisense": [
+      "Hisense",
+      "海信"
+    ]
+  }
+}

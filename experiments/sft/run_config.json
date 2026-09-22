@@ -1,0 +1,63 @@
+{
+  "artifacts": {
+    "adapter_stages": "works/sft/stage-{a,b,c}",
+    "evaluation": "works/eval/sft",
+    "merged_model": "models/sft"
+  },
+  "base_model": "openbmb/MiniCPM5-2B",
+  "config_file": "configs/sft.yaml",
+  "curriculum": {
+    "path": "data/sft/curriculum.json",
+    "sha256": "429434ad1ddfe4c72a1f3be7ffd1785162583ecbe67990bc8d767fbee295da8a",
+    "stages": {
+      "a": {
+        "buckets": [
+          "foundation"
+        ],
+        "epochs": 1.0,
+        "learning_rate": 0.0001,
+        "rows": 256
+      },
+      "b": {
+        "buckets": [
+          "constraints"
+        ],
+        "epochs": 1.0,
+        "learning_rate": 7e-05,
+        "rows": 543
+      },
+      "c": {
+        "buckets": [
+          "strategy"
+        ],
+        "epochs": 1.0,
+        "learning_rate": 5e-05,
+        "rows": 274
+      }
+    }
+  },
+  "eval": {
+    "benchmark": "data/evaluation/tasks.jsonl",
+    "benchmark_sha256": "d99112a20ef47534c27a32e4b38229bf048dcc6b06fef2e3e919aac3093662f5",
+    "context_safety_margin": 512,
+    "context_window": 24576,
+    "denominator": "全部 200 题，不剔除失败轨迹",
+    "max_steps": 35,
+    "max_tokens": 512,
+    "observation_token_budget": 1536,
+    "reward_contract": "shopping-reward-v4",
+    "rollouts": 200,
+    "rollouts_per_task": 1.0,
+    "tasks": 200,
+    "temperature": 0.0,
+    "top_p": 1.0
+  },
+  "kind": "sft",
+  "label": "sft",
+  "teacher_model": "deepseek-v4-flash",
+  "train_data": {
+    "path": "data/sft/all.jsonl",
+    "rows": 1192,
+    "sha256": "7b70db7174daf7660209800441c06b2502d602969881b524ff0d2a3be5fb981e"
+  }
+}

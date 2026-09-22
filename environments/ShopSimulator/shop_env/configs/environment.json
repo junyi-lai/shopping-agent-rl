@@ -1,0 +1,24 @@
+{
+  "environment_version": "shopsimulator-environment-v2.1",
+  "search": {
+    "version": "shopsimulator-multifield-bm25-v2",
+    "top_k": 150,
+    "page_size": 20,
+    "field_weights": {
+      "title": 3.0,
+      "brand": 2.0,
+      "category": 2.0,
+      "model": 2.5,
+      "attributes": 1.5,
+      "options": 1.2,
+      "bullets": 0.8
+    }
+  },
+  "termination": {
+    "version": "shopping-termination-v4",
+    "exact_repeat_limit": 2,
+    "max_steps": 35
+  },
+  "observation_version": "shopping-observation-v2",
+  "tool_version": "shopping-tools-v2"
+}

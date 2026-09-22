@@ -1,0 +1,13 @@
+# Frozen SHA-256 digests in this repository are computed over LF line endings.
+# Force LF for all text files so those integrity checks are reproducible on
+# Windows, macOS and Linux alike.
+* text=auto eol=lf
+
+# Non-text assets must never be line-ending converted.
+*.parquet binary
+*.gz binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.sqlite3 binary
+*.db binary

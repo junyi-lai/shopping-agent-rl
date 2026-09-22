@@ -1,0 +1,57 @@
+# 全局配置:模型、目录、服务端口、奖励参数 —— 所有环节共用
+# 环节参数在 configs/<环节>.yaml;本文件是唯一的全局来源。
+
+models:
+  base_id: openbmb/MiniCPM5-2B     # 学生基础模型(Hugging Face ID)
+  base: models/base                # 可选:把基础模型复制/下载到这里;有 config.json 就优先用本地,否则用上面的 HF ID
+
+paths:
+  data: data                       # 版本化小数据集(入库)
+  models: models                   # 模型(不入库):base/、sft/、rl/<算法>/
+  works: works                     # 工作详情:轨迹、日志、报告、检查点(不入库)
+
+environment:
+  base_url: http://127.0.0.1:5700
+
+serving:                           # 评测时本地起 vLLM 学生模型的参数
+  host: 127.0.0.1
+  port: 8000
+  served_model_name: shopping-agent
+  max_model_len: 24576
+  tensor_parallel_size: 1
+  gpu_memory_utilization: 0.75
+
+reward:                            # 终局判定 + 过程塑造;三个版本各一个**完整块**,格式统一
+  version: v6                      # 选中的版本:v4(冻结基线)/ v5(过程塑造实验,已验证无增益)/ v6(连续终局,当前冠军)
+  max_steps: 35                    # 版本无关,三版共用
+  v4:                              # 冻结基线:离散终局桶 + 原始过程塑造
+    efficiency_cap: 0.10
+    evidence_cap: 0.10
+    evidence_threshold: 2
+    repeat_per_action: 0.02
+    repeat_cap: 0.20
+    exploration_cap: 0.0           # 探索项(只在没买成时给);0.0=关闭
+    exploration_search_target: 3   # 换够 3 个不同搜索词即拿满搜索那一半
+    exploration_open_target: 2     # 打开核验过 2 个候选即拿满候选那一半
+    reward_unverifiable: 0.0       # 终局值:不可验证购买(冻结默认)
+  v5:                              # 过程塑造加密 + 探索项 + 堵不可验证洞(RL 实验,已证伪无增益)
+    efficiency_cap: 0.10
+    evidence_cap: 0.15             # 证据奖励上限 0.10 → 0.15
+    evidence_threshold: 4          # 核验次数阈值 2 → 4(拉细梯度)
+    repeat_per_action: 0.03        # 单次重复惩罚 0.02 → 0.03
+    repeat_cap: 0.25               # 重复惩罚上限 0.20 → 0.25
+    exploration_cap: 0.10          # 探索项 0.0 → 0.10(保守开;保证"认真找再放弃"仍为负)
+    exploration_search_target: 3
+    exploration_open_target: 2
+    reward_unverifiable: -0.40     # 终局值:不可验证购买 0.0 → -0.40(堵"蒙一个拿 0"的洞)
+  v6:                              # 连续终局公式(代码在 terminal.py) + 沿用不可验证修复;过程塑造同 v4
+    efficiency_cap: 0.10
+    evidence_cap: 0.10
+    evidence_threshold: 2
+    repeat_per_action: 0.02
+    repeat_cap: 0.20
+    exploration_cap: 0.0
+    exploration_search_target: 3
+    exploration_open_target: 2
+    reward_unverifiable: -0.40     # 终局值:沿用 v5 修复
+    # 买成(硬门过)奖励 = 0.5*ASIN命中 + match_score - 0.5(连续终局,v6 冠军配置)

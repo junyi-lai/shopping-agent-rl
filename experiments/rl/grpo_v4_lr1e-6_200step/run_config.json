@@ -1,0 +1,51 @@
+{
+  "algorithm": "grpo",
+  "artifacts": {
+    "checkpoints": "works/rl/grpo_v4_lr1e-6_200step",
+    "evaluation": "works/eval/rl/grpo_v4_lr1e-6_200step",
+    "merged_model": "models/rl/grpo_v4_lr1e-6_200step"
+  },
+  "base_model": "openbmb/MiniCPM5-2B",
+  "config_file": "configs/grpo.yaml",
+  "eval": {
+    "benchmark": "data/evaluation/tasks.jsonl",
+    "benchmark_sha256": "d99112a20ef47534c27a32e4b38229bf048dcc6b06fef2e3e919aac3093662f5",
+    "context_safety_margin": 512,
+    "context_window": 24576,
+    "denominator": "全部 200 题，不剔除失败轨迹",
+    "max_steps": 35,
+    "max_tokens": 512,
+    "observation_token_budget": 1536,
+    "reward_contract": "shopping-reward-v4",
+    "rollouts": 200,
+    "rollouts_per_task": 1.0,
+    "tasks": 200,
+    "temperature": 0.0,
+    "top_p": 1.0
+  },
+  "kind": "rl",
+  "label": "grpo_v4_lr1e-6_200step",
+  "reward_version": "v4",
+  "train_data": {
+    "path": "data/rl/train.parquet",
+    "sha256": "9a830c6e375d9969ee61a5de8f76c959e19c2b6b8951f6c366cf6cc5aa2f0c16",
+    "tasks": 900
+  },
+  "validation_data": {
+    "path": "data/rl/validation.parquet",
+    "sha256": "9ecb6433fd397407802bb65f2934f5d6b6b077bf0f70d5fd5779482de82dbe70",
+    "tasks": 100
+  },
+  "verified_from_training_log": {
+    "log": "works/rl/grpo_v4_lr1e-6_200step/training_diagnostics.jsonl",
+    "optimizer_steps": 200,
+    "peak_learning_rate": 1e-06,
+    "reward_contracts_seen": [
+      "shopping-reward-v4"
+    ],
+    "rollouts_per_optimizer_step": [
+      16
+    ],
+    "skipped_updates": 9
+  }
+}

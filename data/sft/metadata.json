@@ -1,0 +1,28 @@
+{
+  "schema_version": "shopping-sft-dataset-v1",
+  "teacher_model": "deepseek-v4-flash",
+  "rows": 1192,
+  "unique_task_ids": 1192,
+  "held_out_evaluation_overlap": 0,
+  "difficulty_labeling": {
+    "model": "deepseek-v4-flash",
+    "simple": 284,
+    "medium": 798,
+    "hard": 110,
+    "full_trajectory_rows": 1186,
+    "compact_tool_content_rows": 6,
+    "compact_tool_content_task_ids": [983, 10574, 10646, 14803, 18595, 20915],
+    "mean_confidence": 0.894,
+    "confidence_below_0_8": 4
+  },
+  "requested_3_5_2_mix": {
+    "status": "not_materialized",
+    "reason": "Observed labels are 23.8% simple, 66.9% medium, and 9.2% hard. An exact 30/50/20 dataset without repetition can contain at most 550 rows and would discard 642 valid rows.",
+    "maximum_no_repeat_rows": 550,
+    "maximum_no_repeat_counts": {
+      "simple": 165,
+      "medium": 275,
+      "hard": 110
+    }
+  }
+}

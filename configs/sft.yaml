@@ -1,0 +1,16 @@
+# 03 SFT:课程 a/b/c 逐级 LoRA 训练,并归档最终合并模型
+
+stage: sft
+
+args:                              # 传给课程训练模块的参数(键名 = 命令行选项名)
+  source: data/sft/all.jsonl       # 02 筛选出的 SFT 数据
+  manifest: data/sft/curriculum.json
+  output-root: works/sft           # 各阶段 adapter / merged 落在工作目录
+  start-stage: a
+  stop-after-stage: c
+  swanlab: false
+  swanlab-project: shopping-agent-sft-curriculum
+  qlora: false
+  liger-kernel: false               # 需要时改成 true,但必须先装 sft-accelerated extra
+
+final_model_dir: models/sft        # 课程结束后,最后阶段 merged 硬链接归档到这里

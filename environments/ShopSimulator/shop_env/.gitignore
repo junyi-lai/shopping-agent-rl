@@ -1,0 +1,7 @@
+# Decompressed product corpus and the generated BM25 index are build artifacts.
+data/*.json
+data/*.preparing
+!data/*.json.gz
+search_engine/
+**/__pycache__/
+*.install.log

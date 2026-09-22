@@ -1,0 +1,35 @@
+# 02 筛选:V4 重打分 → 过滤 → 难度标签 → 课程清单 → RL 任务集
+# 可反复重跑:每次都会合并采集目录里的全部产物重新打分。
+
+stage: filter
+
+rescoring:
+  input: works/collect/accepted.jsonl   # 采集阶段的合格轨迹
+  max-steps: 35
+  # 默认策略 = "每题保留最优的一条":每道题只留 V4 总分最高的那条轨迹,难题不会被
+  # "按步数排名砍尾巴"整题淘汰。min-total 只淘汰明显差的(步数爆表/反复打转/没核验)。
+  min-total: null                  # 例:0.95 → 只保留 V4 总分 ≥ 0.95 的轨迹
+  keep-top: null                   # 例:800  → 只保留质量最高的 800 条(全局截断,建议少用)
+
+output:
+  dataset: data/sft/all.jsonl            # 最终 SFT 数据(冻结交付物)
+  labels: data/sft/difficulty_labels.jsonl
+  curriculum: data/sft/curriculum.json
+  work_dir: works/filter                 # 重打分明细与报告
+
+targets:
+  min_accepted: 800                # 低于该条数时,报告还差多少并建议加大采集参数
+
+labels:                            # 缺标签时用教师模型补打难度标签(增量,只补新增任务)
+  enabled: true
+  model: deepseek-v4-flash
+  workers: 3
+  batch-size: 5
+  max-batch-chars: 60000
+
+rl_dataset:                        # RL 任务集(排除 SFT 与盲测任务)
+  enabled: true
+  dir: data/rl
+  train_count: 900                 # train:validation = 9:1
+  validation_count: 100
+  seed: 20260808

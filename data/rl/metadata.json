@@ -1,0 +1,25 @@
+{
+  "environment": "shopsimulator-environment-v2.1",
+  "provenance": {
+    "excluded": "SFT 全部任务 + 冻结评测集 + 额外排除",
+    "extra_exclude": [
+      "data\\evaluation\\tasks.jsonl"
+    ],
+    "note": "任务池与 SFT/评测不重叠;prompt 来自环境 reset 的真实 instruction",
+    "rebuild": "离线重建(用商品数据里的同一份 instruction),train:validation = 9:1",
+    "seed": 20260808,
+    "source": [
+      "data\\sft\\all.jsonl"
+    ]
+  },
+  "reward": "shopping-reward-v4",
+  "schema_version": "shopping-agent-dataset-v1",
+  "train": {
+    "parquet": "data\\rl\\train.parquet",
+    "tasks": 900
+  },
+  "validation": {
+    "parquet": "data\\rl\\validation.parquet",
+    "tasks": 100
+  }
+}

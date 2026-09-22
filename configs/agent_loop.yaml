@@ -1,0 +1,16 @@
+- name: shopping_tool_agent
+  _target_: shopping_agent.training.rl.adapter.agent_loop.ShoppingToolAgentLoop
+  base_url: ${oc.env:SHOPSIM_BASE_URL,http://127.0.0.1:5700}
+  timeout: 60
+  max_steps: 35
+  required_environment_version: shopsimulator-environment-v2.1
+  context_window_tokens: 24576
+  context_generation_reserve_tokens: 512
+  context_safety_margin_tokens: 512
+  context_input_budget_tokens: 16384
+  context_preserve_recent_groups: 1
+  context_compaction_enable: false
+  observation_token_budget: 1536
+  observation_detail_token_budget: 4096
+  observation_generic_token_budget: 768
+  observation_search_top_k: 20

@@ -1,0 +1,36 @@
+# 01 采集:教师模型(OpenAI 兼容 API)在 ShopSimulator 里生成轨迹
+# 支持增量补采:重跑只会补齐差额,已采任务自动跳过,老数据保留。
+#
+# 规模必须自洽(改之前先算一遍):
+#     task_pool.target_tasks × args.attempts-per-task × 经验验收率 ≳ args.target-accepted
+# 经验验收率约 0.4(只接受"Reward v4 gold_purchase 的完整轨迹",见 collection/sft.py)。
+#
+# 想先便宜地试一小步(几分钟):
+#     python scripts/01_collect.py --target-tasks 8 --target-accepted 2 --workers 2
+# 只用已有轨迹重建统计、完全不调教师:
+#     python scripts/01_collect.py --build-only
+
+stage: collect
+
+task_pool:                         # 固定任务池(确定性抽样,永不与盲测/SFT 重叠)
+  path: works/collect/task_pool.jsonl
+  target_tasks: 2400               # 2400 题 × 1 次 × ~0.4 ≈ 960 条,覆盖下方 target-accepted=900
+  stratify_by: category            # 按顶层品类均匀分配名额,避免简单题/某品类扎堆
+  seed: 20260814
+  exclude:                         # 永远排除的任务清单
+    - data/evaluation/tasks.jsonl   # Final-200 Clean 盲测
+    - data/sft/all.jsonl            # 已用于 SFT 的任务
+
+args:                              # 传给采集模块的参数(键名 = 命令行选项名)
+  output-dir: works/collect
+  model: ${OPENAI_MODEL:-deepseek-flash}   # 教师模型(任意 OpenAI 兼容;DeepSeek 官方 id 是 deepseek-flash)
+  llm-base-url: ${OPENAI_BASE_URL}         # 必填,缺省会带指引报错
+  api-key: ${OPENAI_API_KEY}               # 必填,永不写入任何输出文件
+  target-accepted: 900             # 累计目标(含历史已验收条数),增量补采看这个数
+  attempts-per-task: 1             # 每题尝试次数;调大提高验收率但降低任务多样性
+  workers: 4                       # 并发请求数
+  temperature: 0.7
+  top-p: 1.0
+  max-tokens: 512
+  timeout: 180
+  observation-search-top-k: 20

@@ -1,0 +1,21 @@
+# 05 测评:在 Final-200 Clean 盲测集上评测任意模型目录(SFT / GRPO / RLOO / base)
+
+stage: eval
+
+args:                              # 传给评测模块的参数(键名 = 命令行选项名)
+  benchmark: data/evaluation/tasks.jsonl
+  max-steps: 35
+  temperature: 0.0
+  top-p: 1.0
+  max-tokens: 512
+  timeout: 180
+  context-window: 24576
+  context-safety-margin: 512
+  observation-token-budget: 1536
+  observation-detail-token-budget: 4096
+  observation-generic-token-budget: 768
+  observation-search-top-k: 20
+  workers: 8                       # 并发评测任务数(单 GPU + 32 环境槽位下安全);1=串行
+
+report: true                       # 生成单模型 HTML 报告
+compare: true                      # 生成全部模型对比报告

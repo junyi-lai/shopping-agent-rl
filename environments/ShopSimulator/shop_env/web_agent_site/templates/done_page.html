@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="icon" href="data:,">
+  </head>
+  <body>
+    <div class="container" style="margin-top: 8%;">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="row">
+          <div id="thankyou" class="text-center">
+            <h1>Thank you for shopping with us!</h1>
+          </div>
+          <div id="stats" class="text-center">
+            <h2 align="left">Purchased</h2>
+            <hr class="solid">
+            <h4 id="asin">asin<pre>{{ asin }}</pre></h4>
+            <h4 id="options">options<pre>{{ options | tojson }}</pre></h4>
+            <hr class="solid">
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

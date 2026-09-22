@@ -1,0 +1,27 @@
+{
+  "environment_version": "shopsimulator-environment-v2.1",
+  "lease_contract": "explicit-client-release-v1",
+  "manifest_version": "shopping-environment-manifest-v1",
+  "max_steps": 35,
+  "observation_version": "shopping-observation-v2",
+  "reward": {
+    "version": "shopping-reward-v4"
+  },
+  "search": {
+    "field_weights": {
+      "attributes": 1.5,
+      "brand": 2.0,
+      "bullets": 0.8,
+      "category": 2.0,
+      "model": 2.5,
+      "options": 1.2,
+      "title": 3.0
+    },
+    "page_size": 20,
+    "top_k": 150,
+    "version": "shopsimulator-multifield-bm25-v2"
+  },
+  "seed": 20260728,
+  "shopsimulator_commit": "9ecba272963960ab4a10e1a781bd05cd7634ce20",
+  "tool_version": "shopping-tools-v2"
+}
