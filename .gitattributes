@@ -3,6 +3,11 @@
 # Windows, macOS and Linux alike.
 * text=auto eol=lf
 
+# 测评报告是 05_evaluate 生成的产物,不是源码:不计入 GitHub 语言统计,
+# 也在 PR diff 里折叠。仓库里唯一的 HTML "大头" 就是它们。
+experiments/*.html linguist-generated=true
+experiments/**/*.html linguist-generated=true
+
 # Non-text assets must never be line-ending converted.
 *.parquet binary
 *.gz binary
